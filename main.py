@@ -1,17 +1,25 @@
 import os
 from dotenv import load_dotenv
 from google import genai
+import sys
 
 load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
+
+argv = sys.argv
 
 div = "--------------------------------------"
 
 def main():
     print("Hello from ai-agent!")
 
-    prompt = "Why is Boot.dev such a great place to learn backend development? Use one paragraph maximum."
+    if len(argv) != 2:
+        print(f"wrong number of arguments: {len(argv)}")
+        print(f"argv = {argv}")
+        sys.exit(1)
+
+    prompt = argv[1]
     response = client.models.generate_content(model="gemini-2.0-flash-001", contents=prompt)
     print(response.text)
     print(div)
