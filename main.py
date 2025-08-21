@@ -4,6 +4,10 @@ from google import genai
 import sys
 from google.genai import types
 
+import sys
+sys.path.append("functions")
+from get_files_info import get_files_info
+
 load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
@@ -15,7 +19,9 @@ div = "--------------------------------------"
 def main():
     print("Hello from ai-agent!")
 
+    print(get_files_info(".", "../webflyx"))
 
+    '''
     if len(argv) <= 1:
         print(f"missing argument: prompt")
         print(f"argv = {argv}")
@@ -45,7 +51,7 @@ def main():
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
         print(div)
-    
+    '''
 
 if __name__ == "__main__":
     main()
