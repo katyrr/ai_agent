@@ -19,7 +19,7 @@ div = "--------------------------------------"
 def main():
     print("Hello from ai-agent!")
 
-    print(get_files_info(".", "../webflyx"))
+    print(get_files_info(".", "."))
 
     '''
     if len(argv) <= 1:
