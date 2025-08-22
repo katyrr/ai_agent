@@ -5,6 +5,8 @@ from config import *
 def get_file_content(working_directory, file_path):
     
     full_path = get_directory(working_directory, file_path, "file")
+    if full_path.startswith("Error:"):
+        return full_path
     
     try:
         with open(full_path, 'r') as f:

@@ -9,7 +9,7 @@ def test_get_file_content():
     
     for c in cases:
         print(f"results for {c}:")
-        print(get_file_content("calculator", c))
+        print(get_file_content("calculator", c)[-100:])
         print(DIV)
         print()
 
@@ -31,7 +31,7 @@ def test_get_files_info():
 
     print(DIV)
 
-#test_get_files_info()
+test_get_files_info()
 test_get_file_content()
 
 

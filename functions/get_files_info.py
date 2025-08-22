@@ -4,6 +4,9 @@ from functions.get_directory import get_directory
 def get_files_info(working_directory, directory="."):
 
     full_directory = get_directory(working_directory, directory, "directory")
+    if full_directory.startswith("Error:"):
+        return full_directory
+    
     directory_list = os.listdir(full_directory)
     result = ""
 
