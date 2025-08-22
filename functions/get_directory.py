@@ -44,7 +44,7 @@ def get_directory(working_directory, path, expect_type=None, create_ok=False):
     print(absolute_working_directory)'''
     
     if not absolute_path.startswith(absolute_working_directory):
-        return f'Error: Cannot list "{path}" as it is outside the permitted working directory'
+        return f'Error: Cannot execute "{path}" as it is outside the permitted working directory'
     
     
             
@@ -57,7 +57,7 @@ def get_directory(working_directory, path, expect_type=None, create_ok=False):
         if create_ok:
             os.makedirs(os.path.dirname(full_path), exist_ok=True)
         else:
-            return f'Error: "{path}" is not a file'
+            return f'Error: File "{path}" not found'
     elif expect_type is None:
         if not os.path.isdir(full_path) or not os.path.isfile(full_path):
             if create_ok:
