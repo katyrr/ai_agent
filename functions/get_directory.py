@@ -1,6 +1,6 @@
 import os
 
-def get_directory(working_directory, path, expect_type=None):
+def get_directory(working_directory, path, expect_type=None, create_ok=False):
     ''' 
     INPUTS
     ------
@@ -43,15 +43,29 @@ def get_directory(working_directory, path, expect_type=None):
     print(absolute_path)
     print(absolute_working_directory)'''
     
-    if expect_type=="directory" and not os.path.isdir(full_path):
-        return f'Error: "{path}" is not a directory'
-    elif expect_type=="file" and not os.path.isfile(full_path):
-        return f'Cannot read "{path}" as it is outside the permitted working directory'
-    elif expect_type is None:
-        if not os.path.isdir(full_path) or not os.path.isfile(full_path):
-            return f'Error: {path} is not a valid relative path'
-
     if not absolute_path.startswith(absolute_working_directory):
         return f'Error: Cannot list "{path}" as it is outside the permitted working directory'
     
+    
+            
+    if expect_type=="directory" and not os.path.isdir(full_path):
+        if create_ok:
+            os.makedirs(full_path, exist_ok=True)
+        else:
+            return f'Error: "{path}" is not a directory'
+    elif expect_type=="file" and not os.path.isfile(full_path):
+        if create_ok:
+            os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        else:
+            return f'Error: "{path}" is not a file'
+    elif expect_type is None:
+        if not os.path.isdir(full_path) or not os.path.isfile(full_path):
+            if create_ok:
+                os.makedirs(os.path.dirname(full_path), exist_ok=True)
+            else:
+                return f'Error: relative path {path} does not exist'
+
+    
+        
+
     return full_path

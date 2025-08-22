@@ -1,7 +1,22 @@
+from config import DIV
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
-from config import DIV
+from functions.write_file import write_file
 
+def test_write_file():
+    print(DIV)
+    cases = [
+        ("calculator", "lorem.txt", "wait, this isn't lorem ipsum"),
+        ("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet"),
+        ("calculator", "/tmp/temp.txt", "this should not be allowed")
+    ]
+    
+    for c in cases:
+        print(f"results for write_content{c}:")
+        print(write_file(*c))
+        print()
+
+    print(DIV)
 
 def test_get_file_content():
     print(DIV)
@@ -33,5 +48,7 @@ def test_get_files_info():
 
 test_get_files_info()
 test_get_file_content()
+test_write_file()
+
 
 
