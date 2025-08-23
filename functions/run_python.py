@@ -1,5 +1,6 @@
 from functions.get_directory import get_directory
 import subprocess
+from google.genai import types
 
 def run_python_file(working_directory, file_path, args=[]):
     full_path = get_directory(working_directory, file_path, expect_type="file")
@@ -28,3 +29,24 @@ def run_python_file(working_directory, file_path, args=[]):
     result += stderr
 
     return result
+
+schema_run_python_file = types.FunctionDeclaration(
+    name="run_python_file",
+    description="Run the specified python code, constrained to the working directory, with optional arguments.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file": types.Schema(
+                type=types.Type.STRING,
+                description="The relative file path from the working directory to the file containing the python code to be run.",
+            ),
+            "args": types.Schema(
+                type=types.Type.ARRAY,
+                description="An optional array containing any number of additional arguments for running the python code.",
+                items=types.Schema(
+                    type=types.Type.STRING, 
+                    description="A single argument for the python file.")
+            )
+        },
+    ),
+)

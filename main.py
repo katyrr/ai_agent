@@ -8,6 +8,9 @@ import sys
 from config import *
 #sys.path.append("functions")
 from functions.get_files_info import get_files_info, schema_get_files_info
+from functions.get_file_content import schema_get_file_content
+from functions.write_file import schema_write_file
+from functions.run_python import schema_run_python_file
 
 #-------------------------------------------------------------------------
 
@@ -20,6 +23,9 @@ argv = sys.argv
 available_functions = types.Tool(
     function_declarations=[
         schema_get_files_info,
+        schema_run_python_file,
+        schema_get_file_content,
+        schema_write_file,
     ]
 )
 
