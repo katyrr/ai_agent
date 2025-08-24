@@ -2,12 +2,12 @@ from functions.get_directory import get_directory
 import subprocess
 from google.genai import types
 
-def run_python_file(working_directory, file_path, args=[]):
-    full_path = get_directory(working_directory, file_path, expect_type="file")
+def run_python_file(working_directory, file, args=[]):
+    full_path = get_directory(working_directory, file, expect_type="file")
     if full_path.startswith("Error:"):
         return full_path
     if not full_path.endswith(".py"):
-        return f"Error: {file_path} is not a Python file"
+        return f"Error: {file} is not a Python file"
     
     cmd = ["python3", full_path] + args
     try:

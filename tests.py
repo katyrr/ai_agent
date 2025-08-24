@@ -65,7 +65,7 @@ def test_get_files_info():
 
 #test_get_files_info()
 #test_get_file_content()
-#test_write_file()
+test_write_file()
 test_run_python()
 
 

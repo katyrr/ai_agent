@@ -20,6 +20,9 @@ All paths you provide should be relative to the working directory. You do not ne
 (guards against excessive AI token usage)'''
 MAX_CHARACTER_LIMIT = 10_000
 
+'''a list of expected potential args (not required, just possible)'''
+ALLOWED_ARGS = ["--verbose"] 
+
 #formatting -------------------------------------------------------
 
 '''for use in printing to console'''
