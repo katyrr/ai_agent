@@ -11,6 +11,7 @@ from functions.get_files_info import get_files_info, schema_get_files_info
 from functions.get_file_content import schema_get_file_content
 from functions.write_file import schema_write_file
 from functions.run_python import schema_run_python_file
+from functions.call_function import call_function
 
 #-------------------------------------------------------------------------
 
@@ -66,6 +67,16 @@ def main():
     if response.function_calls:
         for function_call_part in response.function_calls:
             print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+            result = call_function(function_call_part, verbose=True)
+            
+            try: text = result.parts[0].function_response.response
+            except Exception as me:
+                raise Exception(f"Error: {function_call_part} returned no result? {me}")
+            
+            if verbose:
+                print(f"-> {text}")
+
+
     else:
         print(response.text)
     
