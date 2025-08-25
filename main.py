@@ -46,6 +46,11 @@ def main():
     if "--verbose" in argv:
         verbose = True
 
+    print(DIV)
+    if verbose:
+        print(f"User prompt: {prompt}")
+        print(DIV)
+
     for a in argv[2:]:
         if not a in ALLOWED_ARGS:
             print(f"Warning: ingnoring unexpected arg '{a}'")
@@ -54,42 +59,41 @@ def main():
         types.Content(role="user", parts=[types.Part(text=prompt)]),
     ]
 
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-001", 
-        contents=messages,
-        config=types.GenerateContentConfig(
-            system_instruction=SYSTEM_PROMPT,
-            tools=[available_functions]
-        ),
-    )
-    
-    print(DIV)
-    if verbose:
-        print(f"User prompt: {prompt}")
-        print(DIV)
+    for i in range(20):
+        response = client.models.generate_content(
+            model="gemini-2.0-flash-001", 
+            contents=messages,
+            config=types.GenerateContentConfig(
+                system_instruction=SYSTEM_PROMPT,
+                tools=[available_functions]
+            ),
+        )
 
-    if response.function_calls:
-        for function_call_part in response.function_calls:
-            result = call_function(function_call_part, verbose=True)
+        for candidate in response.candidates:
+            messages.append(candidate.content)
 
-            try: text = result.parts[0].function_response.response
-            except Exception as me:
-                raise Exception(f"Error: {function_call_part} returned no result? {me}")
-            
-            if verbose:
-                print(f"-> {text['result']}")
+        if response.function_calls:
+            for function_call_part in response.function_calls:
+                result = call_function(function_call_part, verbose=True)
 
+                try: text = result.parts[0].function_response.response
+                except Exception as me:
+                    raise Exception(f"Error: {function_call_part} returned no result? {me}")
+                
+                if verbose:
+                    print(f"-> {text['result']}")
 
-    else:
-        print(response.text)
-    
-
-    print(DIV)
-
-    if verbose:
-        print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-        print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-        print(DIV)
+                messages.append(types.Content(role="user", parts=[types.Part(text=text['result'])]))
+        else:
+            print("--------final response:--------")
+            print(response.text)
+            break
+        
+        if verbose:
+            print(DIV)
+            print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
+            print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+            print(DIV)
     
 
 if __name__ == "__main__":
